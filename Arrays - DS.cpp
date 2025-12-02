@@ -1,34 +1,103 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 // HackerRank (Easy) | Arrays - DS | https://www.hackerrank.com/challenges/arrays-ds/problem
 
-int main() {
-    int n;
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
 
-    if (!(cin >> n)) {
-        return 0;
+/*
+ * Complete the 'reverseArray' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts INTEGER_ARRAY a as parameter.
+ */
+
+vector<int> reverseArray(vector<int> a) {
+
+    vector<int> reversed_a = a;
+
+    reverse(reversed_a.begin(), reversed_a.end());
+
+    return reversed_a;
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string arr_count_temp;
+    getline(cin, arr_count_temp);
+
+    int arr_count = stoi(ltrim(rtrim(arr_count_temp)));
+
+    string arr_temp_temp;
+    getline(cin, arr_temp_temp);
+
+    vector<string> arr_temp = split(rtrim(arr_temp_temp));
+
+    vector<int> arr(arr_count);
+
+    for (int i = 0; i < arr_count; i++) {
+        int arr_item = stoi(arr_temp[i]);
+
+        arr[i] = arr_item;
     }
-    
-    vector<int> array(n);
-    
-    for (int i = 0; i < n; ++i) {
-        if (!(cin >> array[i])) {
-            return 0;
+
+    vector<int> res = reverseArray(arr);
+
+    for (size_t i = 0; i < res.size(); i++) {
+        fout << res[i];
+
+        if (i != res.size() - 1) {
+            fout << " ";
         }
     }
 
-    for (int i = n - 1; i >= 0; --i) {
-        cout << array[i];
-        if (i > 0) {
-            cout << " ";
-        }
-    }
+    fout << "\n";
 
-    cout << endl;
+    fout.close();
 
     return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
+
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    tokens.push_back(str.substr(start));
+
+    return tokens;
 }
